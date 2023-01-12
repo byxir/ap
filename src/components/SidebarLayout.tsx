@@ -15,14 +15,16 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [navigation, setNavigation] = useState([
-    { name: "Play", href: "/scrims", current: false },
-    { name: "Clubs", href: "/teams", current: false },
+    { name: "Play", href: "/play", current: true },
+    { name: "Clubs", href: "/clubs", current: false },
     { name: "Players", href: "/players", current: false },
   ]);
 
   useEffect(() => {
     const newNavigation = navigation.filter((n) => {
-      `/${n.href}` !== urlCurrent.pathname
+      n.href == "/play" && urlCurrent.pathname == "/"
+        ? (n.current = true)
+        : n.href !== urlCurrent.pathname
         ? (n.current = false)
         : (n.current = true);
       return n;
@@ -136,20 +138,24 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-60 md:flex-col lg:w-64 xl:w-72">
+        <div className="hidden max-h-screen md:fixed md:inset-y-0 md:flex md:w-60 md:flex-col lg:w-64 xl:w-72">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex min-h-0 flex-1 flex-col bg-sidebarBg">
-            <div className="flex flex-1 flex-col overflow-y-auto pt-8 pb-4">
-              <nav className="grid h-full grid-rows-[max-content_max-content_max-content] content-center gap-4 md:px-5 lg:px-12">
+          <div className="grid h-full content-between bg-sidebarBg">
+            <div className="mt-10  h-max w-max text-3xl lg:pl-10">
+              <div>Apex</div>
+              <div>Professional</div>
+            </div>
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              <nav className="grid h-full grid-rows-[max-content_max-content_max-content] content-center gap-2 md:px-5 lg:px-10">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? " border-redAccent border-b-2 bg-sidebarBg text-white "
+                        ? "bg-gradient-to-r from-accentSolid via-pink-600 to-fuchsia-600 text-white"
                         : "text-white hover:bg-sidebarBg hover:text-white",
-                      "group flex w-max items-center px-2 py-2 text-3xl"
+                      "group flex w-full items-center rounded-xl py-2 pl-4 text-2xl hover:bg-neutral-900"
                     )}
                   >
                     {item.name}
@@ -157,7 +163,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 ))}
               </nav>
             </div>
-            <div className="grid h-48 justify-center">
+            <div className="grid h-64 items-center justify-center hover:bg-neutral-900">
               <div className="grid w-max grid-rows-[max-content_max-content] justify-center gap-2">
                 <div className="h-20 w-20 justify-self-center">
                   <img

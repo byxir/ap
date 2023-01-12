@@ -25,6 +25,9 @@ module.exports = {
       // => @media (min-width: 1660px) { ... }
     },
     extend: {
+      borderRadius: {
+        "4xl": "30px",
+      },
       colors: {
         bg: "#1F1F1F",
         sidebarBg: "#1A1A1A",
