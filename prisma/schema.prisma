@@ -138,6 +138,7 @@ model Achievement {
 
     text           String
     image          String
+    difficulty     Int
     Player         Player? @relation(fields: [id], references: [playerId], onDelete: Cascade, onUpdate: Cascade)
     playerPlayerId String?
 

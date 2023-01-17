@@ -28,6 +28,17 @@ module.exports = {
       borderRadius: {
         "4xl": "30px",
       },
+      width: {
+        104: "426px",
+        34: "133px",
+        68: "266px",
+      },
+      height: {
+        "1/12": "1/12",
+        34: "133px",
+        68: "266px",
+        104: "500px",
+      },
       colors: {
         bg: "#1F1F1F",
         sidebarBg: "#1A1A1A",

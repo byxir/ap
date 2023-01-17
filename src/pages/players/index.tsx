@@ -2,6 +2,8 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
+import LegendDropdown from "../../components/dropdowns/LegendDropdown";
+import RankDropdown from "../../components/dropdowns/RankDropdown";
 import { characters } from "../../types/characters";
 
 import { api } from "../../utils/api";
@@ -44,7 +46,7 @@ const Players: NextPage = () => {
 
   return (
     <div className="grid h-screen w-full">
-      <div className="grid h-screen grid-cols-[max-content_auto] gap-12">
+      <div className="grid h-screen grid-cols-[max-content_max-content] justify-between gap-12">
         <div className="grid h-screen grid-rows-[repeat(2,_max-content)] gap-12 overflow-auto  py-10 pl-12">
           <div className="mt-10 h-max text-4xl">Player Leaderboard</div>
           <div className="grid grid-cols-[260px_130px_150px] gap-8">
@@ -68,46 +70,14 @@ const Players: NextPage = () => {
                 className="h-full w-full rounded-r-full border-none bg-accentElement text-lg text-white placeholder-subtext outline-none"
               />
             </div>
-            <div className="text-md grid h-12 grid-cols-[repeat(2,_max-content)] items-center justify-center gap-4 rounded-full bg-accentElement not-italic text-subtext shadow-md">
-              <p>Rank</p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-            <div className="text-md grid h-12 grid-cols-[repeat(2,_max-content)] items-center justify-center gap-2 rounded-full bg-accentElement not-italic text-subtext shadow-md">
-              <p>Legends</p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
+            <RankDropdown />
+            <LegendDropdown />
           </div>
           <div className="mt-6 grid w-max max-w-6xl auto-cols-max grid-cols-5 gap-8 px-2">
             {players.map((p, index) => (
               <Link
                 href={`/players/${p.id}`}
-                className="grid h-60 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 shadow-md outline-none outline-offset-0 hover:shadow-transparent hover:outline-2 hover:outline-white"
+                className="grid h-60 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"
                 key={p.id}
                 onMouseOver={() => {
                   setCurrentPlayer({
@@ -143,7 +113,7 @@ const Players: NextPage = () => {
                   <div className="grid items-center">
                     <img src={`${p.mainCharacter}.png`} />
                   </div>
-                  <div className="grid items-center justify-items-center text-4xl not-italic text-accentSolid">
+                  <div className="grid items-center justify-items-center text-4xl font-bold not-italic text-accentSolid">
                     9
                   </div>
                 </div>
@@ -151,7 +121,7 @@ const Players: NextPage = () => {
             ))}
           </div>
         </div>
-        <div className="grid h-screen w-full content-center items-center justify-items-center gap-14 border-l-2 border-subline p-8">
+        <div className="grid h-screen w-104 content-center items-center justify-items-center gap-14 border-l-2 border-subline p-14">
           {currentPlayer && (
             <>
               <div className="grid h-max w-full items-center justify-items-center gap-10 text-center">
@@ -175,7 +145,7 @@ const Players: NextPage = () => {
                 <div className="mb-8 w-full text-start text-2xl">Info</div>
                 <div className="grid grid-cols-[repeat(2,_max-content)] grid-rows-2 gap-6">
                   <div className="grid h-48 w-36 grid-rows-[repeat(3,_max-content)] content-center justify-items-center rounded-3xl bg-accentElement p-4">
-                    <div className="text-7xl not-italic text-accentSolid">
+                    <div className="text-7xl font-bold not-italic text-accentSolid">
                       9
                     </div>
                     <div className="mt-1 h-2 w-20 rounded-full bg-black">

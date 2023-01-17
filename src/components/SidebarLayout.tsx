@@ -24,7 +24,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
     const newNavigation = navigation.filter((n) => {
       n.href == "/play" && urlCurrent.pathname == "/"
         ? (n.current = true)
-        : n.href !== urlCurrent.pathname
+        : !`${urlCurrent.pathname}/`.includes(`${n.href}/`)
         ? (n.current = false)
         : (n.current = true);
       return n;
@@ -155,7 +155,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                       item.current
                         ? "bg-gradient-to-r from-accentSolid via-pink-600 to-fuchsia-600 text-white"
                         : "text-white hover:bg-sidebarBg hover:text-white",
-                      "group flex w-full items-center rounded-xl py-2 pl-4 text-2xl hover:bg-neutral-900"
+                      "group flex w-full items-center rounded-xl py-2 pl-4 text-2xl transition-all hover:bg-neutral-900"
                     )}
                   >
                     {item.name}
@@ -163,7 +163,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 ))}
               </nav>
             </div>
-            <div className="grid h-64 items-center justify-center hover:bg-neutral-900">
+            <div className="grid h-64 cursor-pointer items-center justify-center hover:bg-neutral-900">
               <div className="grid w-max grid-rows-[max-content_max-content] justify-center gap-2">
                 <div className="h-20 w-20 justify-self-center">
                   <img
@@ -174,7 +174,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 </div>
                 <div className="grid">
                   <div className="grid grid-rows-[repeat(2,_max-content)] justify-items-center">
-                    <p className="font-com w-max text-4xl not-italic text-accentSolid">
+                    <p className="w-max text-4xl font-bold not-italic text-accentSolid">
                       9
                     </p>
                     <div className="h-1 w-11 rounded-full bg-black">
