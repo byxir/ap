@@ -163,7 +163,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 ))}
               </nav>
             </div>
-            <div className="grid h-64 cursor-pointer items-center justify-center hover:bg-neutral-900">
+            <div className="grid h-64 cursor-pointer items-center justify-center transition-all hover:bg-neutral-900">
               <div className="grid w-max grid-rows-[max-content_max-content] justify-center gap-2">
                 <div className="h-20 w-20 justify-self-center">
                   <img

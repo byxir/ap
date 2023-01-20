@@ -15,14 +15,13 @@ interface Iplayer {
   clubName: string;
   pts: number;
   mainCharacter: number;
-  achievement1?: {
-    image: string;
-    text: string;
-  };
-  achievement2?: {
-    image: string;
-    text: string;
-  };
+  badges: Array<
+    | {
+        image: string;
+        text: string;
+      }
+    | undefined
+  >;
 }
 
 const Players: NextPage = () => {
@@ -34,14 +33,10 @@ const Players: NextPage = () => {
     clubName: "Taras&Stas",
     pts: 387,
     mainCharacter: 5,
-    achievement1: {
-      image: "../../predator.png",
-      text: "GRINDER",
-    },
-    achievement2: {
-      image: "../../master.png",
-      text: "Ranked Good",
-    },
+    badges: [
+      { image: "../../predator.png", text: "GRINDER" },
+      { image: "../../predator.png", text: "GRINDER" },
+    ],
   });
 
   return (
@@ -77,21 +72,42 @@ const Players: NextPage = () => {
             {players.map((p, index) => (
               <Link
                 href={`/players/${p.id}`}
-                className="grid h-60 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"
+                className="grid h-64 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 text-center shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"
                 key={p.id}
                 onMouseOver={() => {
-                  setCurrentPlayer({
-                    image: p.image,
-                    name: p.name,
-                    clubName: p.clubName,
-                    pts: p.pts,
-                    mainCharacter: p.mainCharacter,
-                    achievement1: p.achievement1,
-                    achievement2: p.achievement2,
-                  });
+                  let newCurrentPlayer;
+                  if (p.badges.length > 1) {
+                    newCurrentPlayer = {
+                      image: p.image,
+                      name: p.name,
+                      clubName: p.clubName,
+                      pts: p.pts,
+                      mainCharacter: p.mainCharacter,
+                      badges: [p.badges[0], p.badges[1]],
+                    };
+                  } else if (p.badges.length > 0) {
+                    newCurrentPlayer = {
+                      image: p.image,
+                      name: p.name,
+                      clubName: p.clubName,
+                      pts: p.pts,
+                      mainCharacter: p.mainCharacter,
+                      badges: [p.badges[0]],
+                    };
+                  } else {
+                    newCurrentPlayer = {
+                      image: p.image,
+                      name: p.name,
+                      clubName: p.clubName,
+                      pts: p.pts,
+                      mainCharacter: p.mainCharacter,
+                      badges: [],
+                    };
+                  }
+                  setCurrentPlayer(newCurrentPlayer);
                 }}
               >
-                <div className="grid grid-rows-2 justify-items-center gap-2">
+                <div className="grid grid-rows-2 justify-items-center">
                   <div className="h-16 w-16">
                     <img
                       src={p.image}
@@ -100,14 +116,28 @@ const Players: NextPage = () => {
                     />
                   </div>
                   <div className="grid grid-rows-[repeat(2,_max-content)] justify-items-center">
-                    <div className="h-max text-xl">{p.name}</div>
-                    <div className="text-md h-max text-subtext">
+                    <div
+                      className={`h-max ${
+                        p.name.length > 11 ? "text-md" : "text-xl"
+                      }`}
+                    >
+                      {p.name}
+                    </div>
+                    <div
+                      className={`h-max text-subtext ${
+                        p.clubName.length > 11 ? "text-sm" : "text-md"
+                      }`}
+                    >
                       {p.clubName}
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 border-t border-subline">
-                  <div className="grid items-center justify-items-center text-2xl">
+                <div className="grid grid-cols-3 gap-2 border-t-2 border-subline">
+                  <div
+                    className={`grid items-center justify-items-center ${
+                      index + 1 > 99 ? "text-lg" : "text-2xl"
+                    }`}
+                  >
                     #{index + 1}
                   </div>
                   <div className="grid items-center">
@@ -156,7 +186,7 @@ const Players: NextPage = () => {
                     </div>
                     <div className="mt-4 text-2xl">{currentPlayer.pts}pts</div>
                   </div>
-                  <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center rounded-3xl bg-accentElement p-4 pt-5">
+                  <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement p-4 pt-5">
                     <div className="h-24 w-24">
                       <img
                         src={`${currentPlayer.mainCharacter}.png`}
@@ -164,35 +194,57 @@ const Players: NextPage = () => {
                         alt="main legend picture"
                       />
                     </div>
-                    <div className="grid h-full items-center text-2xl text-white">
-                      {characters[currentPlayer.mainCharacter - 1]}
-                    </div>
+                    {currentPlayer.mainCharacter ? (
+                      <div
+                        className={`grid h-full items-center text-center text-white ${
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          characters[currentPlayer.mainCharacter - 1].length > 8
+                            ? "text-lg"
+                            : "text-2xl"
+                        }`}
+                      >
+                        {characters[currentPlayer.mainCharacter - 1]}
+                      </div>
+                    ) : null}
                   </div>
-                  {currentPlayer.achievement1 && (
+                  {currentPlayer.badges[0] && (
                     <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
                       <div className="h-24 w-24">
                         <img
-                          src={currentPlayer.achievement1.image}
+                          src={currentPlayer.badges[0].image}
                           alt="achievement image"
                           className="h-full w-full rounded-full object-cover"
                         />
                       </div>
-                      <div className="grid h-full items-center text-center text-xl">
-                        {currentPlayer.achievement1.text}
+                      <div
+                        className={`grid h-full items-center text-center ${
+                          currentPlayer.badges[0].text.length > 8
+                            ? "text-md"
+                            : "text-xl"
+                        }`}
+                      >
+                        {currentPlayer.badges[0].text}
                       </div>
                     </div>
                   )}
-                  {currentPlayer.achievement2 && (
+                  {currentPlayer.badges[1] && (
                     <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
                       <div className="h-24 w-24">
                         <img
-                          src={currentPlayer.achievement2.image}
+                          src={currentPlayer.badges[1].image}
                           alt="achievement image"
                           className="h-full w-full rounded-full object-cover"
                         />
                       </div>
-                      <div className="grid h-full items-center text-center text-xl">
-                        {currentPlayer.achievement2.text}
+                      <div
+                        className={`grid h-full items-center text-center ${
+                          currentPlayer.badges[1].text.length > 8
+                            ? "text-md"
+                            : "text-xl"
+                        }`}
+                      >
+                        {currentPlayer.badges[1].text}
                       </div>
                     </div>
                   )}

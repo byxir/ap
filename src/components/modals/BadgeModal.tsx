@@ -7,6 +7,7 @@ interface IBadgeModal {
   badges: Array<{
     image: string;
     text: string;
+    howToGet: string;
   }>;
 }
 
@@ -42,7 +43,7 @@ const BadgeModal = ({ open, closeModal, badges }: IBadgeModal) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="text-4 relative grid transform grid-flow-col grid-rows-2 gap-12 overflow-hidden rounded-4xl bg-bg p-10 text-left font-mon font-semibold shadow-xl transition-all">
+              <Dialog.Panel className="text-4 relative grid transform grid-flow-col grid-rows-2 gap-12 overflow-hidden rounded-4xl bg-bg p-12 text-left font-mon font-semibold shadow-xl transition-all">
                 {badges.map((b) => (
                   <div
                     onMouseOver={() =>
@@ -61,10 +62,10 @@ const BadgeModal = ({ open, closeModal, badges }: IBadgeModal) => {
                     </div>
                     <div className="grid text-center text-xl">{b.text}</div>
 
-                    {/* finish this */}
-
                     {infoMenuOpen.open && infoMenuOpen.id === b.text ? (
-                      <div className="absolute"></div>
+                      <div className="absolute -top-9 grid h-8 w-2/3 items-center justify-items-center rounded-lg bg-accentElement p-1 text-xs shadow-md">
+                        {b.howToGet}
+                      </div>
                     ) : null}
                   </div>
                 ))}

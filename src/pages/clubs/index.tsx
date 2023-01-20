@@ -2,10 +2,11 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
-import { characters } from "../types/characters";
+import CreateClubModal from "../../components/modals/CreateClubModal";
+import { characters } from "../../types/characters";
 
-import { api } from "../utils/api";
-import { clubs } from "../utils/tempclubs";
+import { api } from "../../utils/api";
+import { clubs } from "../../utils/tempclubs";
 
 interface Iplayer {
   image: string;
@@ -35,12 +36,13 @@ const Players: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   const [currentClub, setCurrentClub] = useState<Iclub | null>(null);
+  const [createClubMenuOpen, setCreateClubMenuOpen] = useState(false);
 
   return (
     <div className="grid h-screen w-full">
       <div className="grid h-screen grid-cols-[max-content_max-content] justify-between gap-12">
         <div className="grid h-screen grid-rows-[repeat(2,_max-content)] gap-12 overflow-auto  py-10 pl-12">
-          <div className="mt-10 h-max text-4xl">Player Leaderboard</div>
+          <div className="mt-10 h-max text-4xl">Clubs</div>
           <div className="grid grid-cols-[260px_130px_150px] gap-8">
             <div className="grid h-12 grid-cols-[max-content_auto] items-center gap-4 rounded-full bg-accentElement px-4 text-subtext">
               <svg
@@ -62,8 +64,11 @@ const Players: NextPage = () => {
                 className="h-full w-full rounded-r-full border-none bg-accentElement text-lg text-white placeholder-subtext outline-none"
               />
             </div>
-            <div className="text-md grid h-12 cursor-pointer grid-cols-[repeat(2,_max-content)] items-center justify-center gap-4 rounded-full bg-accentElement not-italic text-subtext shadow-md">
-              <p>Rank</p>
+            <div
+              onClick={() => setCreateClubMenuOpen(true)}
+              className="text-md grid h-12 w-max cursor-pointer grid-cols-[repeat(2,_max-content)] items-center gap-2 rounded-full bg-accentElement px-5 not-italic text-subtext shadow-md transition-all hover:bg-neutral-900"
+            >
+              <p>Create Club</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -75,24 +80,7 @@ const Players: NextPage = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-            <div className="text-md grid h-12 cursor-pointer grid-cols-[repeat(2,_max-content)] items-center justify-center gap-2 rounded-full bg-accentElement not-italic text-subtext shadow-md">
-              <p>Legends</p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
             </div>
@@ -104,7 +92,12 @@ const Players: NextPage = () => {
                 className="grid h-72 w-80 cursor-pointer grid-rows-[repeat(3,_max-content)] rounded-4xl bg-accentElement shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"
                 key={c.id}
                 onMouseOver={() => {
-                  setCurrentClub(null);
+                  setCurrentClub({
+                    id: c.id,
+                    name: c.name,
+                    image: c.image,
+                    members: c.members,
+                  });
                 }}
               >
                 <div className="h-28 w-full">
@@ -162,10 +155,79 @@ const Players: NextPage = () => {
             ))}
           </div>
         </div>
-        <div className="grid h-screen w-104 max-w-md content-center items-center justify-items-center gap-14 self-end border-l-2 border-subline p-14">
-          {currentClub && <></>}
+        <div className="grid h-screen w-104 max-w-md items-center justify-items-center gap-14 self-end border-l-2 border-subline p-10">
+          {currentClub ? (
+            <div className="grid h-full w-full grid-rows-[repeat(2,_max-content)] gap-8">
+              <div className="grid grid-rows-[repeat(2,_max-content)] gap-4">
+                <div className="mt-8 h-36 w-full">
+                  <img
+                    src="../../iceberg.jpg"
+                    alt="club image"
+                    className="h-full w-full rounded-2xl object-cover"
+                  />
+                </div>
+                <div className="text-center text-4xl">Камчатские Айсберги</div>
+              </div>
+              <div className="grid grid-rows-[repeat(3,_max-content)] gap-5">
+                <div className="grid grid-cols-[repeat(2,_max-content)] items-center gap-2 justify-self-center">
+                  <div className="text-8xl font-bold not-italic text-accentSolid">
+                    9
+                  </div>
+                  <div className="text-xl text-subtext">
+                    <div>Average</div>
+                    <div>level</div>
+                  </div>
+                </div>
+                <div className="grid w-5/6 justify-items-center gap-2 justify-self-center rounded-4xl bg-accentElement py-4 shadow-md">
+                  <div className="text-xl text-subtext">Total</div>
+                  <div className="text-3xl">23845pts</div>
+                </div>
+                <div className="grid w-full grid-rows-[repeat(4,_max-content)] gap-4 rounded-4xl bg-accentElement p-6 text-xl shadow-md">
+                  <div className="pb-4 text-2xl text-subtext">
+                    Top 3 members
+                  </div>
+                  <div className="grid grid-cols-[repeat(2,_max-content)] items-center gap-3">
+                    <div className="h-16 w-16">
+                      <img
+                        src="../../wraith.png"
+                        alt="member profile picture"
+                        className="h-full w-full rounded-full object-cover"
+                      />
+                    </div>
+                    <div>byxir</div>
+                  </div>
+                  <div className="grid grid-cols-[repeat(2,_max-content)] items-center gap-3">
+                    <div className="h-16 w-16">
+                      <img
+                        src="../../wraith.png"
+                        alt="member profile picture"
+                        className="h-full w-full rounded-full object-cover"
+                      />
+                    </div>
+                    <div>byxir</div>
+                  </div>
+                  <div className="grid grid-cols-[repeat(2,_max-content)] items-center gap-3">
+                    <div className="h-16 w-16">
+                      <img
+                        src="../../wraith.png"
+                        alt="member profile picture"
+                        className="h-full w-full rounded-full object-cover"
+                      />
+                    </div>
+                    <div>byxir</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className="text-subtext">No club selected</p>
+          )}
         </div>
       </div>
+      <CreateClubModal
+        open={createClubMenuOpen}
+        closeModal={() => setCreateClubMenuOpen(false)}
+      />
     </div>
   );
 };

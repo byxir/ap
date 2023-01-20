@@ -13,7 +13,7 @@ import { socials } from "../../utils/tempsocials";
 const Players: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
-  const progress = 75;
+  const progress = 15;
 
   const [badgeModalOpen, setBadgeModalOpen] = useState(false);
 
@@ -86,7 +86,7 @@ const Players: NextPage = () => {
               </div>
             </div>
             <div className="relative h-60 w-80 justify-self-center">
-              <RankDisplay progress={56} />
+              <RankDisplay progress={progress} />
             </div>
             <div className="grid h-60 w-full grid-cols-[4fr_3fr] items-center rounded-4xl bg-accentElement shadow-md">
               <div className="grid pl-10">
@@ -187,7 +187,7 @@ const Players: NextPage = () => {
             <div className="grid h-96 grid-flow-row auto-rows-max gap-4 overflow-auto p-2">
               {players.map((m) => (
                 <div
-                  className="grid h-20 w-full grid-cols-[64px_auto_80px] rounded-4xl bg-accentElement shadow-md outline-none hover:outline-2 hover:outline-offset-0 hover:outline-white"
+                  className="grid h-20 w-full cursor-pointer grid-cols-[64px_auto_80px] rounded-4xl bg-accentElement shadow-md outline-none hover:outline-2 hover:outline-offset-0 hover:outline-white"
                   key={m.id}
                 >
                   <div className="h-20 w-16">

@@ -69,6 +69,7 @@ model Scrim {
     description String?
     date        DateTime
     averageRank Int
+    status      Int
 
     Matches Match[]
 }
@@ -76,9 +77,9 @@ model Scrim {
 model Match {
     matchId String @id @default(cuid())
 
-    performances teamPerformance[]
-    Scrim        Scrim?            @relation(fields: [scrimId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    scrimId      String?
+    teamPerformances teamPerformance[]
+    Scrim            Scrim?            @relation(fields: [scrimId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    scrimId          String?
 
     @@index([scrimId])
 }
@@ -148,4 +149,10 @@ model Achievement {
 enum Role {
     USER
     ADMIN
+}
+
+enum ScrimStatus {
+    PAST
+    ONGOING
+    SCHEDULED
 }
