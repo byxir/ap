@@ -5,6 +5,7 @@ import { useState } from "react";
 import LegendDropdown from "../../components/dropdowns/LegendDropdown";
 import RankDropdown from "../../components/dropdowns/RankDropdown";
 import { characters } from "../../types/characters";
+import { prisma } from "../../../src/server/db";
 
 import { api } from "../../utils/api";
 import { players } from "../../utils/tempplayers";
@@ -14,7 +15,7 @@ interface Iplayer {
   name: string;
   clubName: string;
   pts: number;
-  mainCharacter: number;
+  mainLegend: number;
   badges: Array<
     | {
         image: string;
@@ -25,14 +26,16 @@ interface Iplayer {
 }
 
 const Players: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const handleBackfill = () => {
+  //   backfill.mutate(players);
+  // };
 
   const [currentPlayer, setCurrentPlayer] = useState<Iplayer | null>({
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
     pts: 387,
-    mainCharacter: 5,
+    mainLegend: 5,
     badges: [
       { image: "../../predator.png", text: "GRINDER" },
       { image: "../../predator.png", text: "GRINDER" },
@@ -71,9 +74,9 @@ const Players: NextPage = () => {
           <div className="mt-6 grid w-max max-w-6xl auto-cols-max grid-cols-5 gap-8 px-2">
             {players.map((p, index) => (
               <Link
-                href={`/players/${p.id}`}
+                href={`/players/${p.playerId}`}
                 className="grid h-64 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 text-center shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"
-                key={p.id}
+                key={p.playerId}
                 onMouseOver={() => {
                   let newCurrentPlayer;
                   if (p.badges.length > 1) {
@@ -82,7 +85,7 @@ const Players: NextPage = () => {
                       name: p.name,
                       clubName: p.clubName,
                       pts: p.pts,
-                      mainCharacter: p.mainCharacter,
+                      mainLegend: p.mainLegend,
                       badges: [p.badges[0], p.badges[1]],
                     };
                   } else if (p.badges.length > 0) {
@@ -91,7 +94,7 @@ const Players: NextPage = () => {
                       name: p.name,
                       clubName: p.clubName,
                       pts: p.pts,
-                      mainCharacter: p.mainCharacter,
+                      mainLegend: p.mainLegend,
                       badges: [p.badges[0]],
                     };
                   } else {
@@ -100,7 +103,7 @@ const Players: NextPage = () => {
                       name: p.name,
                       clubName: p.clubName,
                       pts: p.pts,
-                      mainCharacter: p.mainCharacter,
+                      mainLegend: p.mainLegend,
                       badges: [],
                     };
                   }
@@ -141,7 +144,7 @@ const Players: NextPage = () => {
                     #{index + 1}
                   </div>
                   <div className="grid items-center">
-                    <img src={`${p.mainCharacter}.png`} />
+                    <img src={`${p.mainLegend}.png`} />
                   </div>
                   <div className="grid items-center justify-items-center text-4xl font-bold not-italic text-accentSolid">
                     9
@@ -189,65 +192,41 @@ const Players: NextPage = () => {
                   <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement p-4 pt-5">
                     <div className="h-24 w-24">
                       <img
-                        src={`${currentPlayer.mainCharacter}.png`}
+                        src={`${currentPlayer.mainLegend}.png`}
                         className="h-full w-full object-cover"
                         alt="main legend picture"
                       />
                     </div>
-                    {currentPlayer.mainCharacter ? (
+                    {currentPlayer.mainLegend ? (
                       <div
                         className={`grid h-full items-center text-center text-white ${
                           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                           // @ts-ignore
-                          characters[currentPlayer.mainCharacter - 1].length > 8
+                          characters[currentPlayer.mainLegend - 1].length > 8
                             ? "text-lg"
                             : "text-2xl"
                         }`}
                       >
-                        {characters[currentPlayer.mainCharacter - 1]}
+                        {characters[currentPlayer.mainLegend - 1]}
                       </div>
                     ) : null}
                   </div>
-                  {currentPlayer.badges[0] && (
-                    <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
-                      <div className="h-24 w-24">
-                        <img
-                          src={currentPlayer.badges[0].image}
-                          alt="achievement image"
-                          className="h-full w-full rounded-full object-cover"
-                        />
-                      </div>
-                      <div
-                        className={`grid h-full items-center text-center ${
-                          currentPlayer.badges[0].text.length > 8
-                            ? "text-md"
-                            : "text-xl"
-                        }`}
-                      >
-                        {currentPlayer.badges[0].text}
-                      </div>
+                  <div className="grid h-48 w-36 grid-rows-[max-content_auto] content-center justify-items-center gap-4 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
+                    <div className="h-max w-24 self-center text-5xl not-italic text-accentSolid">
+                      2.89
                     </div>
-                  )}
-                  {currentPlayer.badges[1] && (
-                    <div className="grid h-48 w-36 grid-rows-[max-content_auto] justify-items-center gap-2 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
-                      <div className="h-24 w-24">
-                        <img
-                          src={currentPlayer.badges[1].image}
-                          alt="achievement image"
-                          className="h-full w-full rounded-full object-cover"
-                        />
-                      </div>
-                      <div
-                        className={`grid h-full items-center text-center ${
-                          currentPlayer.badges[1].text.length > 8
-                            ? "text-md"
-                            : "text-xl"
-                        }`}
-                      >
-                        {currentPlayer.badges[1].text}
-                      </div>
+                    <div className="grid h-max items-center text-center text-2xl">
+                      K/D
                     </div>
-                  )}
+                  </div>
+                  <div className="grid h-48 w-36 grid-rows-[max-content_auto] content-center justify-items-center gap-5 rounded-3xl bg-accentElement px-4 pb-4 pt-5">
+                    <div className="h-max w-24 self-center text-5xl not-italic text-accentSolid">
+                      294
+                    </div>
+                    <div className="grid h-max items-center text-center text-xl">
+                      Total Kills
+                    </div>
+                  </div>
                 </div>
               </div>
             </>

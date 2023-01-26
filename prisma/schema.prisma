@@ -42,13 +42,23 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String              @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?             @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    socials       Social[]
+    club          Club?               @relation(fields: [clubId], references: [id])
+    clubId        String?             @default("")
+    performances  PlayerPerformance[]
+    badges        Badge[]
+    pts           Int                 @default(0)
+    mainLegend    Int?                @default(0)
+    role          Role                @default(USER)
+
+    @@index([clubId])
 }
 
 model VerificationToken {
@@ -63,20 +73,19 @@ model VerificationToken {
 //---------------------------------------------------------------
 
 model Scrim {
-    id          String   @id @default(cuid())
+    id          String      @id @default(cuid())
     image       String
     title       String
     description String?
     date        DateTime
     averageRank Int
-    status      Int
+    status      ScrimStatus @default(SCHEDULED)
 
     Matches Match[]
 }
 
 model Match {
-    matchId String @id @default(cuid())
-
+    id               String            @id @default(cuid())
     teamPerformances teamPerformance[]
     Scrim            Scrim?            @relation(fields: [scrimId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     scrimId          String?
@@ -85,10 +94,9 @@ model Match {
 }
 
 model teamPerformance {
-    teamPerformanceId String  @id @default(cuid())
-    Match             Match?  @relation(fields: [matchId], references: [matchId], onDelete: Cascade, onUpdate: Cascade)
-    matchId           String?
-
+    id                 String              @id @default(cuid())
+    Match              Match?              @relation(fields: [matchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    matchId            String?
     placement          Int
     killsTotal         Int
     playerPerformances PlayerPerformance[]
@@ -97,53 +105,52 @@ model teamPerformance {
 }
 
 model PlayerPerformance {
-    playerPerformanceId String          @id @default(cuid())
-    team                teamPerformance @relation(fields: [playerPerformanceId], references: [teamPerformanceId], onDelete: Cascade, onUpdate: Cascade)
-    Player              Player?         @relation(fields: [playerId], references: [playerId])
-    playerId            String?
-    kills               Int
-    ptsDelta            Int
-    characterPlayed     Int
+    id              String          @id @default(cuid())
+    team            teamPerformance @relation(fields: [teamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    teamId          String
+    Player          User?           @relation(fields: [playerId], references: [id])
+    playerId        String?
+    kills           Int
+    ptsDelta        Int
+    characterPlayed Int
 
     @@index([playerId])
-    @@index([playerPerformanceId])
+    @@index([id])
+    @@index([teamId])
 }
 
 //---------------------------------------------------------------
 //---------------------------------------------------------------
-
-model Player {
-    playerId     String              @id @default(cuid())
-    name         String
-    originName   String              @unique
-    club         Club                @relation(fields: [playerId], references: [id])
-    performances PlayerPerformance[]
-    pts          Int
-    mainLegend   Int
-
-    achievements Achievement[]
-
-    @@index([playerId])
-}
 
 model Club {
-    id    String @id @default(cuid())
-    name  String @unique
-    image String
+    id         String  @id @default(cuid())
+    name       String  @unique
+    image      String
+    inviteOnly Boolean
 
-    members Player[]
+    members User[]
 }
 
-model Achievement {
+model Badge {
     id String @id @default(cuid())
 
-    text           String
-    image          String
-    difficulty     Int
-    Player         Player? @relation(fields: [id], references: [playerId], onDelete: Cascade, onUpdate: Cascade)
-    playerPlayerId String?
+    text       String
+    image      String
+    difficulty Int
+    Player     User?   @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    playerId   String?
 
-    @@index([id])
+    @@index([playerId])
+}
+
+model Social {
+    id String @id @default(cuid())
+
+    link     String
+    Player   User?  @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    playerId String
+
+    @@index([playerId])
 }
 
 enum Role {

@@ -5,7 +5,7 @@ import ScrimPage from "../../components/scrimPages/ScrimPage";
 
 import { api } from "../../utils/api";
 
-const Players: NextPage = () => {
+const Scrim: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   const [entryMenuOpen, setEntryMenuOpen] = useState(false);
@@ -72,4 +72,4 @@ const Players: NextPage = () => {
   );
 };
 
-export default Players;
+export default Scrim;

@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
 
 function classNames(...classes: Array<string>) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +12,7 @@ function classNames(...classes: Array<string>) {
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const urlCurrent = useRouter();
+  const { data: session } = useSession();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -19,6 +21,14 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
     { name: "Clubs", href: "/clubs", current: false },
     { name: "Players", href: "/players", current: false },
   ]);
+
+  let meLink;
+
+  if (session?.user) {
+    meLink = `/players/${session.user.id}`;
+  } else {
+    meLink = "/signin";
+  }
 
   useEffect(() => {
     const newNavigation = navigation.filter((n) => {
@@ -163,33 +173,40 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                 ))}
               </nav>
             </div>
-            <div className="grid h-64 cursor-pointer items-center justify-center transition-all hover:bg-neutral-900">
-              <div className="grid w-max grid-rows-[max-content_max-content] justify-center gap-2">
-                <div className="h-20 w-20 justify-self-center">
-                  <img
-                    src="https://cdn.inprnt.com/thumbs/5f/80/5f80b304bb13450634af50be3b0e6357.jpg"
-                    alt="profile picture"
-                    className="h-full w-full rounded-full object-cover"
-                  />
-                </div>
-                <div className="grid">
-                  <div className="grid grid-rows-[repeat(2,_max-content)] justify-items-center">
-                    <p className="w-max text-4xl font-bold not-italic text-accentSolid">
-                      9
-                    </p>
-                    <div className="h-1 w-11 rounded-full bg-black">
-                      <div
-                        style={{
-                          width: "43%",
-                          height: "100%",
-                        }}
-                        className="rounded-l-full bg-accentSolid"
-                      ></div>
+            {session ? (
+              <Link
+                href={meLink}
+                className="grid h-64 cursor-pointer items-center justify-center transition-all hover:bg-neutral-900"
+              >
+                <div className="grid w-max grid-rows-[max-content_max-content] justify-center gap-2">
+                  <div className="h-20 w-20 justify-self-center">
+                    <img
+                      src="https://cdn.inprnt.com/thumbs/5f/80/5f80b304bb13450634af50be3b0e6357.jpg"
+                      alt="profile picture"
+                      className="h-full w-full rounded-full object-cover"
+                    />
+                  </div>
+                  <div className="grid">
+                    <div className="grid grid-rows-[repeat(2,_max-content)] justify-items-center">
+                      <p className="w-max text-4xl font-bold not-italic text-accentSolid">
+                        9
+                      </p>
+                      <div className="h-1 w-11 rounded-full bg-black">
+                        <div
+                          style={{
+                            width: "43%",
+                            height: "100%",
+                          }}
+                          className="rounded-l-full bg-accentSolid"
+                        ></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Link>
+            ) : (
+              <Signin />
+            )}
           </div>
         </div>
         <div className=" md:pl-60 lg:pl-64 xl:pl-72">
@@ -216,3 +233,24 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Sidebar;
+
+const Signin = () => {
+  const handleDiscordSignIn = async () => {
+    await signIn("discord", {
+      callbackUrl: `${window.location.origin}`,
+    });
+  };
+
+  return (
+    <div
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onClick={handleDiscordSignIn}
+      className="grid h-64 w-full cursor-pointer content-center justify-items-center gap-2 transition-colors hover:bg-neutral-900"
+    >
+      <div className="h-16 w-16">
+        <img src="../../discord.png" alt="" />
+      </div>
+      <div className="text-center text-lg">Sign in with Discord</div>
+    </div>
+  );
+};

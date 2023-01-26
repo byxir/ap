@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import RankingsModal from "./modals/RankingsModal";
 
-const RankDisplay = ({ progress }: { progress: number }) => {
+const RankDisplay = ({
+  progress,
+  pts,
+  level,
+}: {
+  progress: number;
+  pts: number;
+  level: number;
+}) => {
   const [rankingsModalOpen, setRankingsModalOpen] = useState(false);
 
   const getFill1 = () => {
@@ -57,9 +65,9 @@ const RankDisplay = ({ progress }: { progress: number }) => {
       >
         <div className="grid gap-4 self-center justify-self-center">
           <div className="text-center text-9xl font-bold not-italic text-accentSolid">
-            9
+            {level}
           </div>
-          <div className="text-3xl">387 pts</div>
+          <div className="text-3xl">{pts} pts</div>
         </div>
       </div>
       <div className="absolute left-1/2 h-8 w-34">

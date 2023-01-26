@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import Toggler from "../InviteOnlyToggler";
 
 interface IBadgeModal {
   open: boolean;
@@ -62,6 +63,9 @@ const CreateClubModal = ({ open, closeModal }: IBadgeModal) => {
                       placeholder="Club Name"
                     />
                   </div>
+                  <div className="grid items-center justify-items-center gap-2 text-subtext">
+                    Invite only <Toggler />
+                  </div>
                   <div className="grid grid-cols-[repeat(2,_max-content)] justify-center gap-8 pt-4">
                     <div
                       onClick={() => {
@@ -72,7 +76,7 @@ const CreateClubModal = ({ open, closeModal }: IBadgeModal) => {
                     >
                       Cancel
                     </div>
-                    <div className="grid h-12 w-28 cursor-pointer items-center justify-items-center rounded-xl bg-gradient-to-br from-accentSolid via-pink-600 to-fuchsia-600 shadow-md transition-all hover:opacity-30">
+                    <div className="grid h-12 w-28 cursor-pointer items-center justify-items-center rounded-xl bg-gradient-to-r from-accentSolid via-pink-600 to-fuchsia-600 shadow-md transition-all hover:opacity-30">
                       Create
                     </div>
                   </div>

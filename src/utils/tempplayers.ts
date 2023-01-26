@@ -1,10 +1,10 @@
 export const players = [
   {
-    id: "lakjsbflkjasflkjadsbf",
+    playerId: "lakjsbflkjasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Brazzers",
-    mainCharacter: 19,
+    mainLegend: 19,
     pts: 387,
     badges: [
       { image: "../../master.png", text: "Ranked Good" },
@@ -12,11 +12,11 @@ export const players = [
     ],
   },
   {
-    id: "fhdnfgb",
+    playerId: "fhdnfgb",
     image: "../../wraith.png",
     name: "malahit.",
     clubName: "Камчатские айсберги",
-    mainCharacter: 9,
+    mainLegend: 9,
     pts: 4732,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -24,11 +24,11 @@ export const players = [
     ],
   },
   {
-    id: "lkajgjks",
+    playerId: "lkajgjks",
     image: "../../wraith.png",
     name: "Дамский Угодник217",
     clubName: "Brazzers",
-    mainCharacter: 11,
+    mainLegend: 11,
     pts: 483,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -36,11 +36,11 @@ export const players = [
     ],
   },
   {
-    id: "erjfhlakjdsfh",
+    playerId: "erjfhlakjdsfh",
     image: "../../wraith.png",
     name: "kust'",
     clubName: "Brazzers",
-    mainCharacter: 3,
+    mainLegend: 3,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -48,11 +48,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflkjasflkjadsbf",
+    playerId: "lakjsbflkjasflkjadsbf",
     image: "../../wraith.png",
     name: "Rafs0BiL1Sh",
     clubName: "Brazzers",
-    mainCharacter: 10,
+    mainLegend: 10,
     pts: 335,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -60,11 +60,11 @@ export const players = [
     ],
   },
   {
-    id: "slkjfghljkfhgl",
+    playerId: "slkjfghljkfhgl",
     image: "../../wraith.png",
     name: "drronflaer",
     clubName: "днище",
-    mainCharacter: 1,
+    mainLegend: 1,
     pts: 111,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -72,11 +72,11 @@ export const players = [
     ],
   },
   {
-    id: "lkajhfljkashdfljfh",
+    playerId: "lkajhfljkashdfljfh",
     image: "../../wraith.png",
     name: "9uamolly",
     clubName: "CIRK",
-    mainCharacter: 3,
+    mainLegend: 3,
     pts: 337,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -84,11 +84,11 @@ export const players = [
     ],
   },
   {
-    id: "reiuytudg8gzcbvczbzbjhfg",
+    playerId: "reiuytudg8gzcbvczbzbjhfg",
     image: "../../wraith.png",
     name: "Nine",
     clubName: "NXBL",
-    mainCharacter: 2,
+    mainLegend: 2,
     pts: 3873,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -96,11 +96,11 @@ export const players = [
     ],
   },
   {
-    id: "aksdfgdsfgdfglfshgsdfbdfsb",
+    playerId: "aksdfgdsfgdfglfshgsdfbdfsb",
     image: "../../wraith.png",
     name: "krEy",
     clubName: "NXBL",
-    mainCharacter: 3,
+    mainLegend: 3,
     pts: 3871,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -108,11 +108,11 @@ export const players = [
     ],
   },
   {
-    id: "aklsjhfldfgfghfghakjsfh",
+    playerId: "aklsjhfldfgfghfghakjsfh",
     image: "../../wraith.png",
     name: "requ1em",
     clubName: "днище",
-    mainCharacter: 2,
+    mainLegend: 2,
     pts: 32,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -120,11 +120,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjszsdvsdfsdfbflkjasflkjadsbfakljhdfljahs",
+    playerId: "lakjszsdvsdfsdfbflkjasflkjadsbfakljhdfljahs",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -132,11 +132,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflkjbxcvbcbasflkjadsbf",
+    playerId: "lakjsbflkjbxcvbcbasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -144,11 +144,11 @@ export const players = [
     ],
   },
   {
-    id: "djdthtrhrthtrh",
+    playerId: "djdthtrhrthtrh",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -156,11 +156,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflvxcxvxkjasflkjadsbf",
+    playerId: "lakjsbflvxcxvxkjasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -168,11 +168,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflkjfxgngfxngasflkjadsbf",
+    playerId: "lakjsbflkjfxgngfxngasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -180,11 +180,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsfwezfewfsbflkjasflkjadsbf",
+    playerId: "lakjsfwezfewfsbflkjasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -192,11 +192,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflkjasflkjzxcvzesadsbf",
+    playerId: "lakjsbflkjasflkjzxcvzesadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -204,11 +204,11 @@ export const players = [
     ],
   },
   {
-    id: "lakjsbflkcvxcvzxvjasflkjadsbf",
+    playerId: "lakjsbflkcvxcvzxvjasflkjadsbf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -216,11 +216,11 @@ export const players = [
     ],
   },
   {
-    id: "fyuklfiukfghj",
+    playerId: "fyuklfiukfghj",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -228,11 +228,11 @@ export const players = [
     ],
   },
   {
-    id: "aseraweraf",
+    playerId: "aseraweraf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -240,11 +240,11 @@ export const players = [
     ],
   },
   {
-    id: "dghmdgndg",
+    playerId: "dghmdgndg",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -252,11 +252,11 @@ export const players = [
     ],
   },
   {
-    id: "avdavfva",
+    playerId: "avdavfva",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -264,11 +264,11 @@ export const players = [
     ],
   },
   {
-    id: "234523454",
+    playerId: "234523454",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -276,11 +276,11 @@ export const players = [
     ],
   },
   {
-    id: "dfhffbfgb",
+    playerId: "dfhffbfgb",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },
@@ -288,11 +288,11 @@ export const players = [
     ],
   },
   {
-    id: "asdfadfsf",
+    playerId: "asdfadfsf",
     image: "../../wraith.png",
     name: "byxir",
     clubName: "Taras&Stas",
-    mainCharacter: 5,
+    mainLegend: 5,
     pts: 387,
     badges: [
       { image: "../../predator.png", text: "PRED ARENAS" },

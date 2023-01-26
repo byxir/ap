@@ -8,7 +8,6 @@ import { api } from "../../utils/api";
 import { scrims } from "../../utils/tempscrims";
 
 const Play: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [scrimCategory, setScrimCategory] = useState(0);
 
   return (
