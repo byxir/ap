@@ -1,14 +1,11 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import type { Badge } from "@prisma/client";
 
 interface IBadgeModal {
   open: boolean;
   closeModal: () => void;
-  badges: Array<{
-    image: string;
-    text: string;
-    howToGet: string;
-  }>;
+  badges?: Array<Badge>;
 }
 
 const BadgeModal = ({ open, closeModal, badges }: IBadgeModal) => {
@@ -44,7 +41,7 @@ const BadgeModal = ({ open, closeModal, badges }: IBadgeModal) => {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="text-4 relative grid transform grid-flow-col grid-rows-2 gap-12 overflow-hidden rounded-4xl bg-bg p-12 text-left font-mon font-semibold shadow-xl transition-all">
-                {badges.map((b) => (
+                {badges?.map((b) => (
                   <div
                     onMouseOver={() =>
                       setInfoMenuOpen({ open: true, id: b.text })

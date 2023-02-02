@@ -8,11 +8,28 @@ export const playersRouter = createTRPCRouter({
       where: {
         id: input,
       },
+      include: {
+        socials: true,
+        badges: true,
+        performances: true,
+      },
     });
   }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findMany();
+  getBatch: publicProcedure
+    .input(z.object({ skip: z.number() }))
+    .query(({ ctx, input }) => {
+      const { skip } = input;
+      return ctx.prisma.user.findMany({
+        skip: skip,
+        take: 120,
+      });
+    }),
+
+  getCount: publicProcedure.query(({ ctx }) => {
+    const count = ctx.prisma.user.count();
+
+    return count;
   }),
 
   getSecretMessage: protectedProcedure.query(() => {

@@ -151,12 +151,17 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         <div className="hidden max-h-screen md:fixed md:inset-y-0 md:flex md:w-60 md:flex-col lg:w-64 xl:w-72">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="grid h-full content-between bg-sidebarBg">
-            <div className="mt-10  h-max w-max text-3xl lg:pl-10">
-              <div>Apex</div>
-              <div>Professional</div>
-            </div>
+            <Link
+              href="/play"
+              className="grid h-max w-full cursor-pointer justify-items-center py-10 text-3xl transition-colors hover:bg-neutral-900"
+            >
+              <div className="w-max">
+                <div>Apex</div>
+                <div>Professional</div>
+              </div>
+            </Link>
             <div className="flex flex-1 flex-col overflow-y-auto">
-              <nav className="grid h-full grid-rows-[max-content_max-content_max-content] content-center gap-2 md:px-5 lg:px-10">
+              <nav className="mb-10 grid h-full grid-rows-[max-content_max-content_max-content] content-center gap-2 md:px-5 lg:px-10">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { Social } from "@prisma/client";
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +11,6 @@ import RankDisplay from "../../components/RankDisplay";
 import { api } from "../../utils/api";
 import { badges } from "../../utils/tempbadges";
 import { players } from "../../utils/tempplayers";
-import { socials } from "../../utils/tempsocials";
 
 const Player: NextPage = () => {
   const router = useRouter();
@@ -38,14 +38,18 @@ const Player: NextPage = () => {
         </div>
       ) : user.data ? (
         <div className="grid h-screen grid-cols-[auto_max-content] gap-12">
-          <div className="grid h-screen w-full grid-rows-[repeat(2,_max-content)] gap-12 overflow-auto py-10 pl-12">
+          <div className="grid h-screen w-full grid-rows-[repeat(2,_max-content)] gap-12 py-10 pl-12">
             <div className="relative grid gap-14">
               <div className="row-span-1 grid h-64 grid-cols-[256px_auto_max-content]  gap-8">
                 <div className="h-64 w-64">
                   <img
-                    src={user.data.image ?? "../../apexlogowhite.png"}
+                    src={
+                      user.data.image
+                        ? user.data.image
+                        : "../../../apexlogowhite.png"
+                    }
                     className="h-full w-full rounded-full object-cover"
-                    alt="player profile picture"
+                    alt=""
                   />
                 </div>
                 <div className="grid grid-rows-[repeat(2,_max-content)] content-center gap-4">
@@ -80,23 +84,23 @@ const Player: NextPage = () => {
                   </svg>
                 </div>
               </div>
-              <div className="grid grid-cols-[auto_max-content_auto] gap-12">
+              <div className="grid grid-cols-[auto_auto_max-content] gap-12">
                 <div className="grid h-60 w-full grid-rows-[max-content_auto] justify-items-center rounded-4xl bg-accentElement shadow-md">
                   <div className="w-max px-6 pt-4 pb-4 text-3xl">Socials</div>
                   <div className="grid auto-cols-max grid-flow-col grid-rows-[repeat(2,_max-content)] gap-4 px-6">
-                    {socials.map((s) => (
+                    {user.data?.socials.map((s: Social) => (
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={s}
+                        href={s.link}
                         className="h-16 w-16 rounded-xl"
-                        key={s}
+                        key={s.id}
                       >
                         <img
                           src={
-                            s.split("/")[2]
+                            s.link.split("/")[2]
                               ? // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-                                "../../../" + s.split("/")[2] + ".jpg"
+                                "../../../" + s.link.split("/")[2] + ".jpg"
                               : "../../../public/twitch.tv" + ".jpg"
                           }
                           className="h-full w-full rounded-xl object-cover"
@@ -106,6 +110,40 @@ const Player: NextPage = () => {
                     ))}
                   </div>
                 </div>
+                <div className="grid h-60 w-full grid-cols-[5fr_3fr] items-center rounded-4xl bg-accentElement p-8 shadow-md">
+                  <div className="grid w-max gap-8 justify-self-center pr-4 text-2xl">
+                    <div className="grid grid-cols-[repeat(2,_max-content)] justify-end gap-4 text-end">
+                      <div className="text-white">K/D </div>
+                      <div className="text-accentSolid">
+                        {Number(user.data.kd)}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-[repeat(2,_max-content)] justify-end gap-4 text-end">
+                      <div className="text-white">Total Kills</div>
+                      <div className="text-accentSolid">
+                        {user.data.totalKills}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid items-center justify-items-center">
+                    {user.data.mainLegend ? (
+                      <>
+                        <div className="mb-2 grid h-36 w-32">
+                          <img
+                            src="../../../5.png"
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div className="text-xl">Mad Maggie</div>
+                      </>
+                    ) : (
+                      <div className="self-center text-center text-subtext">
+                        No main
+                      </div>
+                    )}
+                  </div>
+                </div>
                 <div className="relative h-60 w-80 justify-self-center">
                   <RankDisplay
                     progress={progress}
@@ -113,34 +151,12 @@ const Player: NextPage = () => {
                     level={level}
                   />
                 </div>
-                <div className="grid h-60 w-full grid-cols-[5fr_3fr] items-center rounded-4xl bg-accentElement p-8 shadow-md">
-                  <div className="grid w-max gap-8 justify-self-center pr-4 text-2xl">
-                    <div className="grid grid-cols-[repeat(2,_max-content)] justify-end gap-4 text-end">
-                      <div className="text-white">K/D </div>
-                      <div className="text-accentSolid">3.87</div>
-                    </div>
-                    <div className="grid grid-cols-[repeat(2,_max-content)] justify-end gap-4 text-end">
-                      <div className="text-white">Total Kills</div>
-                      <div className="text-accentSolid">193</div>
-                    </div>
-                  </div>
-                  <div className="grid items-center justify-items-center">
-                    <div className="mb-2 h-36 w-32">
-                      <img
-                        src="../../../5.png"
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <div className="text-xl">Mad Maggie</div>
-                  </div>
-                </div>
               </div>
             </div>
-            <div className="grid w-full max-w-max grid-rows-[max-content_max-content] gap-8 self-end justify-self-center rounded-4xl border border-subline px-8 py-6">
+            <div className="grid h-72 w-full grid-rows-[max-content_max-content] gap-8 self-end justify-self-center rounded-4xl border border-subline px-8 py-6">
               <div className="text-3xl">Badges</div>
               <div className="grid h-full auto-cols-max grid-flow-col items-center gap-8">
-                {badges.slice(0, 5).map((b) => (
+                {user.data.badges.slice(0, 5).map((b) => (
                   <div
                     className="grid h-40 w-36 justify-items-center gap-1 rounded-4xl bg-accentElement p-3 shadow-md"
                     key={b.text}
@@ -155,25 +171,27 @@ const Player: NextPage = () => {
                     <div className="grid text-center text-xl">{b.text}</div>
                   </div>
                 ))}
-                <div
-                  onClick={() => setBadgeModalOpen(true)}
-                  className="grid h-40 w-40 cursor-pointer items-center justify-items-center rounded-4xl transition-all hover:bg-neutral-900"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
+                {user.data.badges.length > 5 ? (
+                  <div
+                    onClick={() => setBadgeModalOpen(true)}
+                    className="grid h-40 w-40 cursor-pointer items-center justify-items-center rounded-4xl transition-all hover:bg-neutral-900"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -232,7 +250,7 @@ const Player: NextPage = () => {
                         <div className="h-max">10/06/2003</div>
                       </div>
                     </div>
-                    <div className="grid h-20 w-20 items-center justify-items-center rounded-r-4xl bg-yellow-500 text-3xl">
+                    <div className="grid h-20 w-20 items-center justify-items-center rounded-r-4xl bg-yellow-500 bg-opacity-80 text-3xl">
                       1st
                     </div>
                   </div>
@@ -255,7 +273,7 @@ const Player: NextPage = () => {
       <BadgeModal
         open={badgeModalOpen}
         closeModal={() => setBadgeModalOpen(false)}
-        badges={badges}
+        badges={user.data?.badges}
       />
     </div>
   );

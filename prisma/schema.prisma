@@ -42,21 +42,23 @@ model Session {
 }
 
 model User {
-    id            String              @id @default(cuid())
-    name          String?
-    email         String?             @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    socials       Social[]
-    club          Club?               @relation(fields: [clubId], references: [id])
-    clubId        String?             @default("")
-    performances  PlayerPerformance[]
-    badges        Badge[]
-    pts           Int                 @default(0)
-    mainLegend    Int?                @default(0)
-    role          Role                @default(USER)
+    id           String              @id @default(cuid())
+    name         String
+    email        String?             @unique
+    image        String?
+    accounts     Account[]
+    sessions     Session[]
+    socials      Social[]
+    club         Club?               @relation(fields: [clubId], references: [id])
+    clubId       String              @default("")
+    clubName     String              @default("")
+    performances PlayerPerformance[]
+    badges       Badge[]
+    pts          Int                 @default(0)
+    mainLegend   Int                 @default(0)
+    kd           Decimal             @default(0.00)
+    totalKills   Int                 @default(0)
+    role         Role                @default(USER)
 
     @@index([clubId])
 }
@@ -137,6 +139,7 @@ model Badge {
     text       String
     image      String
     difficulty Int
+    howToGet   String?
     Player     User?   @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     playerId   String?
 

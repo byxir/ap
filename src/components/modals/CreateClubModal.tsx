@@ -76,7 +76,7 @@ const CreateClubModal = ({ open, closeModal }: IBadgeModal) => {
                     >
                       Cancel
                     </div>
-                    <div className="grid h-12 w-28 cursor-pointer items-center justify-items-center rounded-xl bg-gradient-to-r from-accentSolid via-pink-600 to-fuchsia-600 shadow-md transition-all hover:opacity-30">
+                    <div className="grid h-12 w-28 cursor-pointer items-center justify-items-center rounded-xl bg-gradient-to-r from-accentSolid via-pink-600 to-fuchsia-600 text-lg shadow-md transition-all hover:opacity-30">
                       Create
                     </div>
                   </div>
