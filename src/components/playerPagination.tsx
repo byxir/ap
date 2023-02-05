@@ -9,8 +9,8 @@ export default function PlayerPagination({
 }: {
   count: number | undefined;
 }) {
-  const endPage = Math.ceil(count ? count / 2 : 10);
-  const [currentPage, setCurrentPage] = useState(8);
+  const endPage = Math.ceil(count ? count / 1 : 10);
+  const [currentPage, setCurrentPage] = useState(60);
 
   const [dotsLeft, setDotsLeft] = useState(false);
   const [dotsRight, setDotsRight] = useState(false);
@@ -18,18 +18,8 @@ export default function PlayerPagination({
   const [centerValue, setCenterValue] = useState<number | null>(4);
   const [leftValue, setLeftValue] = useState<number | null>(3);
 
-  useEffect(() => {
-    if (currentPage > 4) {
-      setDotsLeft(true);
-      setDotsRight(false);
-    } else {
-      setDotsLeft(false);
-      setDotsRight(true);
-    }
-  }, [currentPage]);
-
   const getLeftDots = () => {
-    if (currentPage > 4) {
+    if (currentPage > 4 && endPage > 7) {
       return true;
     } else {
       return false;
@@ -37,7 +27,7 @@ export default function PlayerPagination({
   };
 
   const getRightDots = () => {
-    if (currentPage < endPage - 3) {
+    if (currentPage < endPage - 3 && endPage > 7) {
       return true;
     } else {
       return false;
@@ -52,7 +42,7 @@ export default function PlayerPagination({
     } else if (currentPage > 4) {
       return endPage - 3;
     } else {
-      return null;
+      return 4;
     }
   };
 
@@ -64,7 +54,7 @@ export default function PlayerPagination({
     } else if (currentPage > 4) {
       return endPage - 4;
     } else {
-      return null;
+      return 3;
     }
   };
 
@@ -76,7 +66,7 @@ export default function PlayerPagination({
     } else if (currentPage > 4) {
       return endPage - 2;
     } else {
-      return null;
+      return 5;
     }
   };
 
@@ -101,53 +91,65 @@ export default function PlayerPagination({
         >
           1
         </a>
-        <a
-          href={
-            getLeftDots()
-              ? `players?page=${Math.ceil(currentPage / 2)}`
-              : "players?page=2"
-          }
-          className="inline-flex items-center border-t-2 border-accentSolid px-4 pt-4 text-lg font-medium text-accentSolid"
-          aria-current="page"
-        >
-          {getLeftDots() ? "..." : "2"}
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          {getLeftValue()}
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          {getCenterValue()}
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          {getRightValue()}
-        </a>
-        <a
-          href={
-            getRightDots()
-              ? `players?page=${
-                  currentPage + Math.floor((endPage - currentPage) / 2)
-                }`
-              : "players?page=2"
-          }
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          {getRightDots() ? "..." : endPage - 1}
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          {endPage}
-        </a>
+        {endPage > 1 && (
+          <a
+            href={
+              getLeftDots()
+                ? `players?page=${Math.ceil(currentPage / 2)}`
+                : "players?page=2"
+            }
+            className="inline-flex items-center border-t-2 border-accentSolid px-4 pt-4 text-lg font-medium text-accentSolid"
+            aria-current="page"
+          >
+            {getLeftDots() ? "..." : "2"}
+          </a>
+        )}
+        {endPage > 2 && (
+          <a
+            href="#"
+            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          >
+            {getLeftValue()}
+          </a>
+        )}
+        {endPage > 3 && (
+          <a
+            href="#"
+            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          >
+            {getCenterValue()}
+          </a>
+        )}
+        {endPage > 4 && (
+          <a
+            href="#"
+            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          >
+            {getRightValue()}
+          </a>
+        )}
+        {endPage > 5 && (
+          <a
+            href={
+              getRightDots()
+                ? `players?page=${
+                    currentPage + Math.floor((endPage - currentPage) / 2)
+                  }`
+                : "players?page=2"
+            }
+            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          >
+            {getRightDots() ? "..." : endPage > 6 ? endPage - 1 : 6}
+          </a>
+        )}
+        {endPage > 6 && (
+          <a
+            href="#"
+            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          >
+            {endPage}
+          </a>
+        )}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
         <a
