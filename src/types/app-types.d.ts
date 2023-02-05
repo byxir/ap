@@ -1,9 +1,3 @@
-//types for tourneys & scrims: scheduled and completed (also ongoing)
-
-//the admin first creates the tourney manually in the admin panel.
-//as it progresses it automatically, fills up the "matches" array
-//and pts deltas for players. When a tourney is completed,
-//player rankings are also updated
 type ITourney = {
   id: string;
   image: string;
@@ -44,13 +38,6 @@ type ITourney = {
   }>;
 };
 
-//types for players: inline and full page
-
-//players are stored in 2 types that are linked to each other:
-//the first one contains all the basic info displayed on the leaderboard
-//the second one also contains more specific information about a player
-//including their match history, which is just a linked array of tourney objects
-
 type IPlayer = {
   id: string;
   image: string;
@@ -72,10 +59,6 @@ type IPlayerFull = {
 
   history: Array<ITourney>;
 };
-
-//types for teams: inline and full page
-
-//same thing with teams
 
 type ITeam = {
   id: string;

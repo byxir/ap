@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { type NextPage } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SortDropdown from "../../components/dropdowns/SortDropdown";
 import { characters } from "../../types/characters";
 
@@ -18,17 +18,9 @@ const Players: NextPage = () => {
 
   const count = api.players.getCount.useQuery();
 
-  const players = api.players.getBatch.useQuery(
-    { skip: (query.page ? Number(query.page) - 1 : 0) * 120 },
-    { keepPreviousData: true }
-  );
-
-  const [playerStack, setPlayerStack] = useState<Array<User>>([]);
-
-  useEffect(() => {
-    players.data &&
-      setPlayerStack((prevStack) => [...prevStack, ...players.data]);
-  }, [players.data]);
+  const players = api.players.getBatch.useQuery({
+    skip: (query.page ? Number(query.page) - 1 : 0) * 120,
+  });
 
   return (
     <div className="grid h-screen w-full">
@@ -64,7 +56,7 @@ const Players: NextPage = () => {
             </div>
           ) : (
             <div className="mt-6 grid w-max max-w-6xl auto-cols-max grid-cols-5 gap-8 px-2">
-              {playerStack.map((p: User, index: number) => (
+              {players.data?.map((p: User, index: number) => (
                 <Link
                   href={`/players/${p.id}`}
                   className="grid h-64 w-48 cursor-pointer grid-rows-[7fr_3fr] rounded-4xl bg-accentElement px-6 pt-6 pb-3 text-center shadow-md outline-none outline-offset-0 transition-all hover:shadow-transparent hover:outline-2 hover:outline-white"

@@ -23,6 +23,11 @@ export const playersRouter = createTRPCRouter({
       return ctx.prisma.user.findMany({
         skip: skip,
         take: 120,
+        orderBy: [
+          {
+            pts: "desc",
+          },
+        ],
       });
     }),
 
