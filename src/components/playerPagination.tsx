@@ -10,33 +10,75 @@ export default function PlayerPagination({
   count: number | undefined;
 }) {
   const endPage = Math.ceil(count ? count / 2 : 10);
-  const [currentPage, setCurrentPage] = useState(30);
+  const [currentPage, setCurrentPage] = useState(8);
 
   const [dotsLeft, setDotsLeft] = useState(false);
-  const [dotsRight, setDotsRight] = useState(true);
-  const [centerValue, setCenterValue] = useState(4);
+  const [dotsRight, setDotsRight] = useState(false);
+  const [rightValue, setRightValue] = useState<number | null>(5);
+  const [centerValue, setCenterValue] = useState<number | null>(4);
+  const [leftValue, setLeftValue] = useState<number | null>(3);
 
   useEffect(() => {
-    if (currentPage >= 5 || (currentPage >= 3 && currentPage <= endPage - 3)) {
+    if (currentPage > 4) {
       setDotsLeft(true);
+      setDotsRight(false);
     } else {
       setDotsLeft(false);
-    }
-
-    if (currentPage <= 5 || (currentPage >= 2 && currentPage <= endPage - 3)) {
       setDotsRight(true);
-    } else {
-      setDotsRight(false);
-    }
-
-    if (dotsLeft) {
-      setCenterValue(currentPage - 1);
-    } else if (currentPage < 5) {
-      setCenterValue(3);
-    } else {
-      setCenterValue(currentPage);
     }
   }, [currentPage]);
+
+  const getLeftDots = () => {
+    if (currentPage > 4) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const getRightDots = () => {
+    if (currentPage < endPage - 3) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const getCenterValue = () => {
+    if (currentPage > 4 && currentPage < endPage - 3) {
+      return currentPage;
+    } else if (currentPage < endPage - 3) {
+      return 4;
+    } else if (currentPage > 4) {
+      return endPage - 3;
+    } else {
+      return null;
+    }
+  };
+
+  const getLeftValue = () => {
+    if (currentPage > 4 && currentPage < endPage - 3) {
+      return currentPage - 1;
+    } else if (currentPage < endPage - 3) {
+      return 3;
+    } else if (currentPage > 4) {
+      return endPage - 4;
+    } else {
+      return null;
+    }
+  };
+
+  const getRightValue = () => {
+    if (currentPage > 4 && currentPage < endPage - 3) {
+      return currentPage + 1;
+    } else if (currentPage < endPage - 3) {
+      return 5;
+    } else if (currentPage > 4) {
+      return endPage - 2;
+    } else {
+      return null;
+    }
+  };
 
   return (
     <nav className="flex h-max items-center justify-between border-t border-subline px-4 sm:px-0">
@@ -59,37 +101,46 @@ export default function PlayerPagination({
         >
           1
         </a>
-        {/* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-subtext hover:text-gray-700 hover:border-subline" */}
         <a
-          href="#"
+          href={
+            getLeftDots()
+              ? `players?page=${Math.ceil(currentPage / 2)}`
+              : "players?page=2"
+          }
           className="inline-flex items-center border-t-2 border-accentSolid px-4 pt-4 text-lg font-medium text-accentSolid"
           aria-current="page"
         >
-          {dotsLeft ? "..." : "2"}
+          {getLeftDots() ? "..." : "2"}
         </a>
         <a
           href="#"
           className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
         >
-          3
+          {getLeftValue()}
         </a>
         <a
           href="#"
           className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
         >
-          {centerValue}
+          {getCenterValue()}
         </a>
         <a
           href="#"
           className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
         >
-          5
+          {getRightValue()}
         </a>
         <a
-          href="#"
+          href={
+            getRightDots()
+              ? `players?page=${
+                  currentPage + Math.floor((endPage - currentPage) / 2)
+                }`
+              : "players?page=2"
+          }
           className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
         >
-          {dotsRight ? "..." : endPage - 1}
+          {getRightDots() ? "..." : endPage - 1}
         </a>
         <a
           href="#"
