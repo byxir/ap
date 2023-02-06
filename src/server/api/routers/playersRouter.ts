@@ -17,9 +17,10 @@ export const playersRouter = createTRPCRouter({
   }),
 
   getBatch: publicProcedure
-    .input(z.object({ skip: z.number() }))
+    .input(z.object({ skip: z.number(), keywords: z.string() }))
     .query(({ ctx, input }) => {
       const { skip } = input;
+      const { keywords } = input;
       return ctx.prisma.user.findMany({
         skip: skip,
         take: 120,
@@ -28,8 +29,23 @@ export const playersRouter = createTRPCRouter({
             pts: "desc",
           },
         ],
+        where: {
+          name: {
+            contains: keywords,
+          },
+        },
       });
     }),
+
+  getByKeyword: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.prisma.user.findMany({
+      where: {
+        name: {
+          contains: input,
+        },
+      },
+    });
+  }),
 
   getCount: publicProcedure.query(({ ctx }) => {
     const count = ctx.prisma.user.count();

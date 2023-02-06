@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { type NextPage } from "next";
 import Link from "next/link";
+import type { ChangeEvent } from "react";
 import { useState } from "react";
 import SortDropdown from "../../components/dropdowns/SortDropdown";
 import { characters } from "../../types/characters";
+import debounce from "lodash.debounce";
 
 import { api } from "../../utils/api";
 import type { User } from "@prisma/client";
@@ -13,6 +15,7 @@ import PlayerPagination from "../../components/playerPagination";
 
 const Players: NextPage = () => {
   const [currentPlayer, setCurrentPlayer] = useState<User>();
+  const [searchText, setSearchText] = useState("");
 
   const { query } = useRouter();
 
@@ -20,7 +23,15 @@ const Players: NextPage = () => {
 
   const players = api.players.getBatch.useQuery({
     skip: (query.page ? Number(query.page) - 1 : 0) * 120,
+    keywords: searchText,
   });
+
+  const updateQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const debouncedUpdate = debounce(updateQuery, 350);
 
   return (
     <div className="grid h-screen w-full">
@@ -29,21 +40,26 @@ const Players: NextPage = () => {
           <div className="mt-10 h-max text-4xl">Player Leaderboard</div>
           <div className="grid grid-cols-[260px_140px] gap-8">
             <div className="grid h-12 grid-cols-[max-content_max-content] items-center gap-4 rounded-full bg-accentElement px-4 text-subtext">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
+              {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+              <div onClick={() => players.refetch()} className="">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  />
+                </svg>
+              </div>
               <input
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+                onChange={debouncedUpdate}
                 placeholder="Search"
                 className="h-full w-full rounded-r-full border-none bg-accentElement text-lg text-white placeholder-subtext outline-none"
               />
