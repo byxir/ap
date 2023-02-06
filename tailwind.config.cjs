@@ -42,7 +42,7 @@ module.exports = {
       colors: {
         bg: "#1F1F1F",
         sidebarBg: "#1A1A1A",
-        accentSolid: "#D72034",
+        accentSolid: "#D72034 !important",
         subline: "#3A3A3A",
         subtext: "#989898",
         accentElement: "#262626",

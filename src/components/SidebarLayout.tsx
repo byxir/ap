@@ -19,7 +19,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [navigation, setNavigation] = useState([
     { name: "Play", href: "/play", current: true },
     { name: "Clubs", href: "/clubs", current: false },
-    { name: "Players", href: "/players", current: false },
+    { name: "Players", href: "/players?page=1", current: false },
   ]);
 
   let meLink;

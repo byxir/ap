@@ -14,11 +14,11 @@ export default function PlayerPagination({
   const endPage = Math.ceil(count ? count / 1 : 10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const router = useRouter();
+  const { query } = useRouter();
 
   useEffect(() => {
-    setCurrentPage(Number(router.query.page));
-  }, [router.query.page]);
+    setCurrentPage(Number(query.page));
+  }, [query.page]);
 
   const getLeftDots = () => {
     if (currentPage > 4 && endPage > 7) {
@@ -29,7 +29,7 @@ export default function PlayerPagination({
   };
 
   const getRightDots = () => {
-    if (currentPage < endPage - 3 && endPage > 7) {
+    if ((currentPage < endPage - 3 && endPage > 7) || !currentPage) {
       return true;
     } else {
       return false;
@@ -73,23 +73,29 @@ export default function PlayerPagination({
   };
 
   return (
-    <nav className="flex h-max items-center justify-between border-t border-subline px-4 sm:px-0">
+    <nav className="flex h-max items-center justify-between border-t-2 border-subline px-4 text-subtext sm:px-0">
       <div className="-mt-px flex w-0 flex-1">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          <ArrowLongLeftIcon
-            className="mr-3 h-5 w-5 text-subtext"
-            aria-hidden="true"
-          />
-          Previous
-        </a>
+        {currentPage > 1 && (
+          <Link
+            href={`players?page=${currentPage > 1 ? currentPage - 1 : 1}`}
+            className="group inline-flex items-center pt-4 pr-1 text-lg font-medium text-subtext hover:text-white"
+          >
+            <ArrowLongLeftIcon
+              className="mr-3 h-5 w-5 text-subtext group-hover:text-white"
+              aria-hidden="true"
+            />
+            Previous
+          </Link>
+        )}
       </div>
       <div className="hidden md:-mt-px md:flex">
         <Link
           href="players?page=1"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+          className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+            currentPage === 1
+              ? "border-t-2 border-accentSolid text-accentSolid"
+              : "hover:text-white"
+          }`}
         >
           1
         </Link>
@@ -100,7 +106,11 @@ export default function PlayerPagination({
                 ? `players?page=${Math.ceil(currentPage / 2)}`
                 : "players?page=2"
             }
-            className="inline-flex items-center border-t-2 border-accentSolid px-4 pt-4 text-lg font-medium text-accentSolid"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium ${
+              currentPage === 2
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
             aria-current="page"
           >
             {getLeftDots() ? "..." : "2"}
@@ -109,7 +119,11 @@ export default function PlayerPagination({
         {endPage > 2 && (
           <Link
             href={`players?page=${getLeftValue()}`}
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+              currentPage === 3
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
           >
             {getLeftValue()}
           </Link>
@@ -117,7 +131,13 @@ export default function PlayerPagination({
         {endPage > 3 && (
           <Link
             href={`players?page=${getCenterValue()}`}
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+              currentPage === 4 ||
+              currentPage === endPage - 3 ||
+              (currentPage > 4 && currentPage < endPage - 3)
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
           >
             {getCenterValue()}
           </Link>
@@ -125,7 +145,11 @@ export default function PlayerPagination({
         {endPage > 4 && (
           <Link
             href={`players?page=${getRightValue()}`}
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+              currentPage === endPage - 2
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
           >
             {getRightValue()}
           </Link>
@@ -139,7 +163,11 @@ export default function PlayerPagination({
                   }`
                 : "players?page=2"
             }
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+              currentPage === endPage - 1
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
           >
             {getRightDots() ? "..." : endPage > 6 ? endPage - 1 : 6}
           </Link>
@@ -147,23 +175,31 @@ export default function PlayerPagination({
         {endPage > 6 && (
           <Link
             href={`players?page=${endPage}`}
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
+            className={`inline-flex items-center px-4 pt-4 text-lg font-medium hover:border-subline ${
+              currentPage === endPage
+                ? "border-t-2 border-accentSolid text-accentSolid"
+                : "hover:text-white"
+            }`}
           >
             {endPage}
           </Link>
         )}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
-        >
-          Next
-          <ArrowLongRightIcon
-            className="ml-3 h-5 w-5 text-subtext"
-            aria-hidden="true"
-          />
-        </a>
+        {currentPage < endPage && (
+          <Link
+            href={`players?page=${
+              currentPage < endPage ? currentPage + 1 : endPage
+            }`}
+            className="group inline-flex items-center pt-4 pl-1 text-lg font-medium text-subtext hover:text-white"
+          >
+            Next
+            <ArrowLongRightIcon
+              className="ml-3 h-5 w-5 text-subtext group-hover:text-white"
+              aria-hidden="true"
+            />
+          </Link>
+        )}
       </div>
     </nav>
   );

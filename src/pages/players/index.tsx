@@ -2,6 +2,7 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import type { ChangeEvent } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import SortDropdown from "../../components/dropdowns/SortDropdown";
 import { characters } from "../../types/characters";
@@ -12,18 +13,21 @@ import type { User } from "@prisma/client";
 import Spinner from "../../components/commons/spinner";
 import { useRouter } from "next/router";
 import PlayerPagination from "../../components/playerPagination";
+import { Query } from "@tanstack/react-query";
 
 const Players: NextPage = () => {
   const [currentPlayer, setCurrentPlayer] = useState<User>();
   const [searchText, setSearchText] = useState("");
+  const [sortMethod, setSortMethod] = useState(1);
 
-  const { query } = useRouter();
+  const { query, push } = useRouter();
 
   const count = api.players.getCount.useQuery();
 
   const players = api.players.getBatch.useQuery({
     skip: (query.page ? Number(query.page) - 1 : 0) * 120,
     keywords: searchText,
+    sortMethod: sortMethod,
   });
 
   const updateQuery = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,11 +68,20 @@ const Players: NextPage = () => {
                 className="h-full w-full rounded-r-full border-none bg-accentElement text-lg text-white placeholder-subtext outline-none"
               />
             </div>
-            <SortDropdown />
+            <SortDropdown
+              sortMethod={sortMethod}
+              changeSortMethod={(newSortMethod: number) =>
+                setSortMethod(newSortMethod)
+              }
+            />
           </div>
           {players.isLoading ? (
             <div className="mt-16 grid w-full justify-items-center">
               <Spinner />
+            </div>
+          ) : !query.page ? (
+            <div className="self-center justify-self-center text-3xl text-subtext">
+              No page specified
             </div>
           ) : (
             <div className="mt-6 grid w-max max-w-6xl auto-cols-max grid-cols-5 gap-8 px-2">
