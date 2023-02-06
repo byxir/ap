@@ -2,6 +2,8 @@ import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/20/solid";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function PlayerPagination({
@@ -10,13 +12,13 @@ export default function PlayerPagination({
   count: number | undefined;
 }) {
   const endPage = Math.ceil(count ? count / 1 : 10);
-  const [currentPage, setCurrentPage] = useState(60);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [dotsLeft, setDotsLeft] = useState(false);
-  const [dotsRight, setDotsRight] = useState(false);
-  const [rightValue, setRightValue] = useState<number | null>(5);
-  const [centerValue, setCenterValue] = useState<number | null>(4);
-  const [leftValue, setLeftValue] = useState<number | null>(3);
+  const router = useRouter();
+
+  useEffect(() => {
+    setCurrentPage(Number(router.query.page));
+  }, [router.query.page]);
 
   const getLeftDots = () => {
     if (currentPage > 4 && endPage > 7) {
@@ -85,14 +87,14 @@ export default function PlayerPagination({
         </a>
       </div>
       <div className="hidden md:-mt-px md:flex">
-        <a
-          href="#"
+        <Link
+          href="players?page=1"
           className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
         >
           1
-        </a>
+        </Link>
         {endPage > 1 && (
-          <a
+          <Link
             href={
               getLeftDots()
                 ? `players?page=${Math.ceil(currentPage / 2)}`
@@ -102,34 +104,34 @@ export default function PlayerPagination({
             aria-current="page"
           >
             {getLeftDots() ? "..." : "2"}
-          </a>
+          </Link>
         )}
         {endPage > 2 && (
-          <a
-            href="#"
+          <Link
+            href={`players?page=${getLeftValue()}`}
             className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
           >
             {getLeftValue()}
-          </a>
+          </Link>
         )}
         {endPage > 3 && (
-          <a
-            href="#"
+          <Link
+            href={`players?page=${getCenterValue()}`}
             className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
           >
             {getCenterValue()}
-          </a>
+          </Link>
         )}
         {endPage > 4 && (
-          <a
-            href="#"
+          <Link
+            href={`players?page=${getRightValue()}`}
             className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
           >
             {getRightValue()}
-          </a>
+          </Link>
         )}
         {endPage > 5 && (
-          <a
+          <Link
             href={
               getRightDots()
                 ? `players?page=${
@@ -140,15 +142,15 @@ export default function PlayerPagination({
             className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
           >
             {getRightDots() ? "..." : endPage > 6 ? endPage - 1 : 6}
-          </a>
+          </Link>
         )}
         {endPage > 6 && (
-          <a
-            href="#"
+          <Link
+            href={`players?page=${endPage}`}
             className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-lg font-medium text-subtext hover:border-subline hover:text-gray-700"
           >
             {endPage}
-          </a>
+          </Link>
         )}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
